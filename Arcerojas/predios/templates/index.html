@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arce rojas asesores</title>
+</head>
+<body>
+    <form action="{% url 'create_owner'%}" method="post">
+        {% csrf_token %}
+
+        <label for="nombre">Nombre Completo:</label>
+        <input type="text" name="nombre" required maxlength="100"><br>
+        
+        <label for="tipo">Tipo de persona:</label>
+        <select name="tipo" required>
+            {% for key, value in tipo_propietario %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select><br>
+        
+        <label for="tipo_identificacion">Tipo de Identificación:</label>
+        <select name="tipo_identificacion" required>
+            {% for key, value in tipos_identificacion %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select><br>
+
+        <label for="numero_identificacion">Número de Identificación:</label>
+        <input type="text" name="numero_identificacion" maxlength="20" id="numero_identificacion"><br>
+
+        <input type="submit" value="Guardar">
+        
+    </form>
+
+    <form action="{% url 'create_predio'%}" method="post">
+        {% csrf_token %}
+
+        <label for="nombre_direccion">Nombre o dirección Predio:</label>
+        <input type="text" name="nombre_direccion" required maxlength="100" id="nombre_direccion"><br>
+        
+        <label for="tipo_predio">Tipo predio:</label>
+        <select name="tipo_predio" required id="tipo_predio">
+            {% for key, value in tipo_predio %}
+                <option value="{{ key }}">{{ value }}</option>
+            {% endfor %}
+        </select><br>
+        
+        <label for="numero_catastral">Número catastral: </label>
+        <input type="text" name="numero_catastral" maxlength="30" id="numero_catastral"><br>
+
+        <label for="numero_matricula">Número de matricula inmobiliaria:</label>
+        <input type="text" name="numero_matricula" maxlength="30" id="numero_matricula"><br>
+
+        <input type="submit" value="Guardar">
+
+    </form>
+
+    <table>
+        <h1>Lista de Predios</h1>
+        <tr>
+            <th>Nombre/Direccion</th>
+            <th>Tipo predio</th>
+            <th>Numero catastral</th>
+            <th>Numero de matricula</th>
+        </tr>
+        {% for predio in predios%}
+        <tr>
+            <td>{{predio.nombre_direccion}}</td>
+            <td>{{predio.tipo_predio}}</td>
+            <td>{{predio.numero_catastral}}</td>
+            <td>{{predio.numero_matricula_inmobiliaria}}</td>
+            <td>
+                <form action="{% url 'eliminar_predio' predio.id %}">
+                    {% csrf_token %}
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% empty%}
+        <h2>No hay predios a mostrar</h2>
+        {% endfor %}
+    </table>
+
+</body>
+</html>
